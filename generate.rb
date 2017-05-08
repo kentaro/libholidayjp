@@ -11,6 +11,9 @@ holidays.each do |k, v|
   code << <<~EOS
     static holidayjp_holiday h#{i} = {
         "#{v['date']}",
+        #{v['date'].year.to_i},
+        #{v['date'].month.to_i},
+        #{v['date'].day.to_i},
         "#{v['week']}",
         "#{v['week_en']}",
         "#{v['name']}",

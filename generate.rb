@@ -8,7 +8,7 @@ code = ""
 holidays = YAML.load_file("modules/holiday_jp/holidays_detailed.yml")
 holidays.each do |k, v|
   i = i + 1
-  code << <<EOS
+  code << <<~EOS
     static holidayjp_holiday h#{i} = {
         "#{v['date']}",
         "#{v['week']}",
@@ -16,12 +16,12 @@ holidays.each do |k, v|
         "#{v['name']}",
         "#{v['name_en']}"
     };
-    holidayjp_hash_set(h, "#{k}", &h#{i});  
+    holidayjp_hash_set(h, "#{k}", &h#{i});
 EOS
 end
 
 content = File.read("holidayjp.h")
-              .sub(/(\s+\/\* AUTO GENERATED START \*\/\s+)(?:.+)(\s+\/\* AUTO GENERATED END \*\/\s+)/, "\\1#{code}\\2")
+              .sub(/(\/\* AUTO GENERATED START \*\/)(?:.+)(\/\* AUTO GENERATED END \*\/)/m, "\\1\n#{code}\\2")
 File.open("holidayjp.h", "w") do |f|
   f.write(content)
 end
